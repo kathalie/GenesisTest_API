@@ -162,7 +162,7 @@ async function sendEmail(receiver, subject, text) {
 
 // AUTOMATIC SENDING
 let rate;
-const timeDelay = 10*9;
+const timeDelay = 1000*60*10; // 10 min
 
 // Automatic sending of emails every {timeDelay} ms.
 setInterval(await automaticSending, timeDelay);

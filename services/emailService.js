@@ -1,6 +1,5 @@
 import fs from "fs";
 import nodemailer from "nodemailer";
-import fetch from 'node-fetch';
 import {getRate} from './rateService.js'
 
 /**
@@ -161,10 +160,17 @@ async function sendEmail(receiver, subject, text) {
     console.log(`Message sent: ${info.messageId} (sent to: ${receiver})`);
 }
 
+// AUTOMATIC SENDING
 let rate;
+const timeDelay = 10*9;
 
-setInterval(await automaticSending, 1000);
+// Automatic sending of emails every {timeDelay} ms.
+setInterval(await automaticSending, timeDelay);
 
+/**
+ * An asynchronous function, that sends emails with current rate when it is updated.
+ * @returns {Promise<void>}
+ */
 async function automaticSending() {
     const newRate = await getRate();
     if (newRate === rate) return;

@@ -1,5 +1,6 @@
 import fs from "fs";
 import nodemailer from "nodemailer";
+import fetch from 'node-fetch';
 import {getRate} from './rateService.js'
 
 /**
@@ -94,7 +95,8 @@ function getSubscribers() {
     try {
         fileContent = fs.readFileSync(subscribersFileName, 'utf-8').split('\n');
         // removes last empty string (occurs when emails are added and separated by new line)
-        fileContent.pop();
+        if (fileContent[fileContent.length - 1].replace(" ", "") === '')
+            fileContent.pop();
     } catch (ignored) {}
 
     return fileContent;
@@ -157,6 +159,20 @@ async function sendEmail(receiver, subject, text) {
     });
 
     console.log(`Message sent: ${info.messageId} (sent to: ${receiver})`);
+}
+
+let rate;
+
+setInterval(await automaticSending, 1000);
+
+async function automaticSending() {
+    const newRate = await getRate();
+    if (newRate === rate) return;
+
+    rate = newRate;
+    try {
+        await sendEmails();
+    } catch(ignored) {}
 }
 
 export {subscribeEmail, sendEmails};

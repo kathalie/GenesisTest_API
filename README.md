@@ -32,3 +32,7 @@ __Other options:__
 `EMAIL_SUBJECT` – email subject (by default: “Поточний курс біткоїна в гривні”)
 
 `EMAIL_TEXT` – email text (by default: “1 BTC = %r% UAH”). Note: `%r%` - is a placeholder for the exchange rate value. When specifying this variable make sure to insert “%r%” to the place where you want the value to appear.
+
+## Additional features
+### Automatic sending
+Once an hour the API checks current exchange rate state and send emails containing the updated value to all the subscribers if the rate has changed since the last fetch.
